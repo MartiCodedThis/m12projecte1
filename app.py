@@ -1,20 +1,13 @@
 from flask import Flask, render_template
 import sqlite3
+import os
 from flask import g
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-@app.route("/") 
-def hello_world():
-    return render_template('hello.html')
-
-@app.route('/list')
-def list():
-    return render_template("list.html")
-
 # DATABASE CONFIG
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'  # Change this to your database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
 def init_db():
@@ -28,8 +21,22 @@ def init_db():
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
+        db = g._database = sqlite3.connect('instance/database.db')
     return db
+
+@app.route("/") 
+def hello_world():
+    return render_template('hello.html')
+
+@app.route('/list')
+def list():
+    connexio= get_db()
+    cursor = connexio.cursor()
+    cursor.execute('SELECT title, description, price FROM products')
+    products = cursor.fetchall()
+    connexio.close()
+    return render_template("list.html", products = products) ##
+
 
 @app.teardown_appcontext
 def close_connection(exception):

@@ -6,22 +6,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>My App</title>
-	<link href="/static/css/my_app.css" rel="stylesheet">
+    <!-- <link href="/static/css/my_app.css" rel="stylesheet"> -->
 </head>
 
 <body>
 	<h3>Items</h3>
 	<table>
 		<tr>
-			<th>ID</th>
-			<th>NOM</th>
-			<th>UNITATS</th>
+			<th>Nom</th>
+			<th>Descripcio</th>
+			<th>Preu</th>
 		</tr>
-		{% for item in items %}
+		{% for product in products %}
 			<tr>
-				<td>{{ item['id'] }}</a></td>
-				<td>{{ item['nom'] }}</a></td>
-				<td>{{ item['unitats'] }}</a></td>
+				<td>{{ product[0] }}</a></td>
+				<td>{{ product[1] }}</a></td>
+				<td>{{ product[2] }}</a></td>
 			</tr>
 		{% endfor %}
 	</table>
