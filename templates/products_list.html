@@ -19,12 +19,14 @@
 		</tr>
 		{% for product in products %}
 			<tr>
-				<td>{{ product[0] }}</a></td>
 				<td>{{ product[1] }}</a></td>
 				<td>{{ product[2] }}</a></td>
+				<td>{{ product[3] }}</a></td>
+				<td><a href="/products/read/{{product[0]}}">Read</a><a href="/products/update/{{product[0]}}">Update</a><a href="/products/delete/{{product[0]}}">Delete</a></td>
 			</tr>
 		{% endfor %}
 	</table>
+	<a class="action" href="{{url_for('create')}}">Crear producte</a>
 </body>
 
 </html>

@@ -1,7 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, g, request, redirect, abort, url_for, flash
 import sqlite3
 import os
-from flask import g
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -28,16 +27,45 @@ def get_db():
 def hello_world():
     return render_template('hello.html')
 
-@app.route('/list')
+@app.route("/products/list") 
 def list():
-    connexio= get_db()
-    cursor = connexio.cursor()
-    cursor.execute('SELECT title, description, price FROM products')
-    products = cursor.fetchall()
-    connexio.close()
-    return render_template("list.html", products = products) ##
+    with get_db() as con:
+        products = con.execute('SELECT id, title, description, price FROM products ORDER BY id').fetchall()
+    return render_template('products_list.html', products = products)
 
+@app.route("/products/read/<int:id>") 
+def read(id):
+    with get_db() as con:
+        products = con.execute('SELECT id, title, description, price FROM products WHERE id = ? ORDER BY id', (id,)).fetchall()
+    return render_template('products_read.html', products = products)
 
+@app.route("/products/update/<int:id>") 
+def update(id):
+    with get_db() as con:
+        products = con.execute('SELECT id, title, description, price FROM products WHERE id = ? ORDER BY id', (id,)).fetchall()
+    return render_template('products_update.html', products = products)
+
+@app.route("/products/delete/<int:id>") 
+def delete(id):
+    with get_db() as con:
+        products = con.execute('SELECT id, title, description, price FROM products WHERE id = ? ORDER BY id', (id,)).fetchall()
+    return render_template('products_list.html', products = products)
+
+@app.route("/products/create", methods=["GET","POST"]) 
+def create():
+    if request.method == "GET":
+        return render_template("products_create.html")
+    elif request.method == "POST":
+        nom = request.form['nom']
+        descripcio = request.form['descripcio']
+        imatge = request.form['imatge']
+        preu = request.form['preu']
+        categoria = request.form['categoria']
+    with get_db() as con:
+        query = "INSERT INTO products (title, description, photo, price, category_id) VALUES (?, ?, ?, ?, ?)"
+        con.execute(query, (nom,descripcio,imatge,preu,categoria))
+        con.commit()
+        return list()
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
