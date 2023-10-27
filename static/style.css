@@ -1,8 +1,0 @@
-body{
-    background-color: blue;
-    background-image: radial-gradient(red 30%, white 10%, blue 60%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
