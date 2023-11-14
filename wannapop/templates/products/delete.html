@@ -2,19 +2,19 @@
 {% from "_formhelpers.html" import render_errors %}
 {% block content %}
 
-<h3>Producte {{ product.id }}</h3>
-<ul>
-    <li>Nom: {{ product.title }}</li>
-    <li>Descripció: {{ product.description }}</li>
-    <li>Preu: {{ product.price }}</li>
-</ul>
-<p><img src="/static/products/{{ product.photo }}" alt="{{ product.title }}" /></p>
-<p>Confirma que vols esborrar aquest product:</p>
-<form action="/products/delete/{{ product.id }}" method="POST">
+<h2 class="text-3xl mb-5 font-bold">Esborrar producte</h2>
+<div class="flex flex-col w-full items-center mb-4">
+    <p class="mb-4">Confirma que vols esborrar aquest producte:</p>
+    <div class="w-1/2 lg:w-1/4 mb-4 mx-auto rounded-xl overflow-hidden">
+        <img class="w-full" src="/static/products/{{ product.photo }}" alt="{{ product.title }}" />
+    </div>
+    <p class="text-xl font-bold">"{{ product.title }}"</p>
+</div>
+<form class="flex w-full lg:w-1/2 flex-col lg:flex-row mx-auto items-center justify-between" action="/products/delete/{{ product.id }}" method="POST">
     {{ form.csrf_token }}
-    <p>{{ form.submit(value="ESBORRAR") }}</p>
+    <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/products/list">&larr; Tornar</a>
+    <p>{{ form.submit(value="✖ Esborrar", class_="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500") }}</p>
     {{ render_errors(form) }}
 </form>
-<a href="/products/list">&#x3c;&#x3c; Tornar al llistat de productes</a>
 
 {% endblock %}

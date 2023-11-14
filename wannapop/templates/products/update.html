@@ -2,19 +2,25 @@
 {% from "_formhelpers.html" import render_errors %}
 {% block content %}
 
-<h3>Producte {{ product_id }}</h3>
+<h2 class="text-3xl mb-5 font-bold">Editar producte</h2>
 
-<form action="/products/update/{{ product_id }}" method="POST" enctype="multipart/form-data">
+<form class="w-full lg:w-1/2 mx-auto mb-5" action="/products/update/{{ product_id }}" method="POST" enctype="multipart/form-data">
    {{ form.csrf_token }}
-   <p>{{ form.title.label }}: {{ form.title() }}</p>
-   <p>{{ form.description.label }}: {{ form.description() }}</p>
-   <p>{{ form.photo_file.label }}: {{ form.photo_file() }}</p>
-   <p>{{ form.price.label }}: {{ form.price() }}</p>
-   <p>{{ form.category_id.label }}: {{ form.category_id() }}</p>
-   <p>{{ form.submit(value="MODIFICAR") }}</p>
+   <p>{{ form.title.label(class_="font-semibold text-slate-400") }}</p>
+   <p>{{ form.title(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
+   <p>{{ form.description.label(class_="font-semibold text-slate-400") }}</p>
+   <p>{{ form.description(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
+   <p>{{ form.photo_file.label(class_="font-semibold text-slate-400") }}</p>
+   <p>{{ form.photo_file(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
+   <p>{{ form.price.label(class_="font-semibold text-slate-400") }}</p>
+   <p>{{ form.price(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
+   <p>{{ form.category_id.label(class_="font-semibold text-slate-400") }}</p>
+   <p>{{ form.category_id(class_="w-full h-8 border-2 rounded-full bg-white px-2 mb-2 shadow-inner") }}</p>
+   <div class="flex w-full flex-col lg:flex-row items-center justify-between">
+      <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/products/list">&larr; Tornar</a>
+      <p>{{ form.submit(value="✔ Confirmar", class_="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500") }}</p>
    {{ render_errors(form) }}
+   </div>
 </form>
-
-<a href="/products/list">&#x3c;&#x3c; Tornar al llistat de productes</a>
 
 {% endblock %}

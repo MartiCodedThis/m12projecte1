@@ -6,12 +6,17 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>Wannapop</title>
-   <link href="/static/css/wannapop.css" rel="stylesheet">
+   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-   <h2>Wannapop</h2>
-   <hr />
+<body class="bg-slate-200 text-slate-800 font-sans">
+   <nav class="bg-white p-5">
+      <div class="container mx-auto flex justify-between items-center">
+         <h1 class="font-black text-5xl">Wannapop</h2>
+      </div>
+   </nav>  
+   
+   <div class="container mx-auto p-10">
    {% with messages = get_flashed_messages(with_categories=true) %}
    {% if messages %}
       <div class="messages">
@@ -21,10 +26,13 @@
       </div>
    {% endif %}
    {% endwith %}
+   <div class="bg-white p-4 rounded-lg shadow-md">
    <!-- START CONTENT -->
    {% block content %} {% endblock %}
    <!-- END CONTENT -->
-   <hr />
+   </div>
+
+   </div>
 </body>
 
 </html>

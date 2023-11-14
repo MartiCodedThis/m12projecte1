@@ -1,17 +1,29 @@
 {% extends '_template.html' %}
 {% block content %}
 
-<h3>Producte {{ product.id }}</h3>
-<a href="/products/update/{{ product.id }}">Modificar producte</a>
-<br />
-<a href="/products/delete/{{ product.id }}">Esborrar producte</a>
-<ul>
-   <li>Nom: {{ product.title }}</li>
-   <li>Descripció: {{ product.description }}</li>
-   <li>Preu: {{ product.price }}</li>
-   <li>Categoria: {{ category.name }} </li>
-</ul>
-<p><img src="/static/products/{{ product.photo }}" alt="{{ product.title }}" /></p>
-<a href="/products/list">&#x3c;&#x3c; Tornar al llistat de productes</a>
+<h2 class="text-3xl mb-5 font-bold">Producte {{ product.id }}</h2>
+<div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 mb-4">
+   <div class="lg:w-1/3 h-96 rounded-xl overflow-hidden">
+      <img class="object-cover w-full h-full" src="/static/products/{{ product.photo }}" alt="{{ product.title }}"/>
+   </div>
+   <div class="lg:w-2/3">
+      <h3 class="font-semibold text-slate-400">Nom</h3>
+      <p>{{ product.title }}</p>
+      <h3 class="font-semibold text-slate-400">Descripció</h3>
+      <p>{{ product.description }}</p>
+      <h3 class="font-semibold text-slate-400">Categoria</h3>
+      <p>{{ category.name }} </p>
+      <p class="my-2 text-3xl font-black">{{ product.price }}€</p>
+   </div>
+   
+</div>
+<div class="flex w-full flex-col lg:flex-row items-center justify-between">
+   <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/products/list">&larr; Tornar</a>
+   <div class="flex flex-col lg:flex-row lg:space-x-2">
+      <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/products/update/{{ product.id }}">&#9998 Modificar producte</a>
+      <a class="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500" href="/products/delete/{{ product.id }}">&#10006 Esborrar producte</a>
+   </div>
+</div>
+
 
 {% endblock %}
