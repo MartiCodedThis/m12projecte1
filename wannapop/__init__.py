@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from app.routes_auth import auth_bp
 import os
+
 
 db_manager = SQLAlchemy()
 
