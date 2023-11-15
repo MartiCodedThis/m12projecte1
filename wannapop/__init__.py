@@ -7,6 +7,7 @@ db_manager = SQLAlchemy()
 def create_app():
     # Construct the core app object
     app = Flask(__name__)
+    app.config.from_pyfile("config.py")
 
     # ruta absoluta d'aquesta carpeta
     basedir = os.path.abspath(os.path.dirname(__file__)) 
