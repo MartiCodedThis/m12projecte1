@@ -1,12 +1,13 @@
-{% extends 'template.html' %}
+{% extends '_template.html' %}
+
+{% block content %}
 
 <h2 class="text-3xl mb-5 font-bold">{% block title %}Log in{% endblock %}</h2>
 
-{% block content %}
-  <form class="w-full lg:w-1/2 mx-auto mb-5" action="/auth/login" method="POST">
+  <form class="w-full lg:w-1/2 mx-auto mb-5" action="login" method="POST">
     {{ form.csrf_token }}
-    <p>{{ form.username.label(class_="font-semibold text-slate-400") }}</p>
-    <p>{{ form.username(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
+    <p>{{ form.email.label(class_="font-semibold text-slate-400") }}</p>
+    <p>{{ form.email(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
     <p>{{ form.password.label(class_="font-semibold text-slate-400") }}</p>
     <p>{{ form.password(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
     <div class="flex w-full flex-col lg:flex-row items-center justify-between">
