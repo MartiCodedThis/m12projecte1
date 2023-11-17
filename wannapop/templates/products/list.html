@@ -1,7 +1,7 @@
 {% extends '_template.html' %}
 {% block content %}
 
-<h2 class="text-3xl mb-5 font-bold">Productes</h3>
+<h2 class="text-3xl mb-5 font-bold">{% block title %}Productes{% endblock %}</h3>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 	{% for (product, category) in products_with_category %}
 	<div class="bg-white border-2 p-4 rounded-lg shadow-inner">

@@ -1,8 +1,9 @@
 {% extends '_template.html' %}
 {% from "_formhelpers.html" import render_errors %}
+
 {% block content %}
 
-<h2 class="text-3xl mb-5 font-bold">Nou producte</h2>
+<h2 class="text-3xl mb-5 font-bold">{% block title %}Crear producte{% endblock %}</h2>
 
 <form class="w-full lg:w-1/2 mx-auto mb-5" action="/products/create" method="POST" enctype="multipart/form-data">
    {{ form.csrf_token }}
