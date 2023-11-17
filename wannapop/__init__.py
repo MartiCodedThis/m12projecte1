@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app.routes_auth import auth_bp
+from config import *
 import os
 
 
@@ -10,6 +10,8 @@ def create_app():
     # Construct the core app object
     app = Flask(__name__)
 
+    app.config.from_pyfile('../config.py')
+    
     # ruta absoluta d'aquesta carpeta
     basedir = os.path.abspath(os.path.dirname(__file__)) 
 
