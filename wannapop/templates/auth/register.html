@@ -4,7 +4,7 @@
 
 <h2 class="text-3xl mb-5 font-bold">{% block title %}Registrar{% endblock %}</h2>
 
-<form class="w-full lg:w-1/2 mx-auto mb-5" action="/auth/register" method="POST">
+<form class="w-full lg:w-1/2 mx-auto mb-5" action="/register" method="POST">
     {{ form.csrf_token }}
     <p>{{ form.username.label(class_="font-semibold text-slate-400") }}</p>
     <p>{{ form.username(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>

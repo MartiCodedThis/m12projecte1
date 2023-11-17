@@ -16,12 +16,11 @@ def create_app():
     basedir = os.path.abspath(os.path.dirname(__file__)) 
 
     # Inicialitza els plugins
-    db_manager.init_app(app)
     login_manager.init_app(app)
+    db_manager.init_app(app)
 
     with app.app_context():
-        from . import routes_main
-        from . import routes_auth
+        from . import routes_main, routes_auth
 
         # Registra els blueprints
         app.register_blueprint(routes_main.main_bp)
