@@ -2,7 +2,7 @@
 {% from "_formhelpers.html" import render_errors %}
 {% block content %}
 
-<h2 class="text-3xl mb-5 font-bold">Esborrar producte</h2>
+<h2 class="text-3xl mb-5 font-bold">{% block title %}Esborrar producte{% endblock %}</h2>
 <div class="flex flex-col w-full items-center mb-4">
     <p class="mb-4">Confirma que vols esborrar aquest producte:</p>
     <div class="w-1/2 lg:w-1/4 mb-4 mx-auto rounded-xl overflow-hidden">
