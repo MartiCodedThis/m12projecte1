@@ -3,7 +3,8 @@ from flask_login import current_user, login_user, login_required, logout_user
 from . import db_manager as db
 from . import login_manager
 from .models import User
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 auth_bp = Blueprint(
@@ -22,15 +23,40 @@ def login():
         password_plain = form.password.data
 
         user = load_user(email)
-        if user:
+        if user and check_password_hash(user.password, password_plain):
             login_user(user)
             flash("Benvingut a Wannapop!","success")
             return redirect(url_for('main_bp.init'))
         else:
-            flash("Error autenticant usuari","error")
+            flash("Error d'autenticació d'usuari. Comprova que els credencials siguin correctes!","error")
             return redirect(url_for('auth_bp.login'))
     
     return render_template('auth/login.html', form = form)
+
+@auth_bp.route('/register', methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("main_bp.init"))
+
+    form =  RegisterForm()
+
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        password = generate_password_hash(form.password.data)
+        
+        new_user = User(name=name, email=email, password=password)
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+            flash("Nou compte creat! Ja pots entrar dins de Wannapop.","error")
+            return redirect(url_for('main_bp.init'))
+        except:
+            db.session.rollback()
+            flash("Error en la creació del compte.","error")
+
+
+    return render_template('auth/register.html', form = form)
 
 @auth_bp.route("/logout")
 @login_required

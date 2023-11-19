@@ -58,8 +58,8 @@ def product_create():
         # https://en.wikipedia.org/wiki/Post/Redirect/Get
         flash("Nou producte creat", "success")
         return redirect(url_for('main_bp.product_list'))
-    else: # GET
-        return render_template('products/create.html', form = form)
+    
+    return render_template('products/create.html', form = form)
 
 @main_bp.route('/products/read/<int:product_id>')
 @login_required
@@ -98,8 +98,8 @@ def product_update(product_id):
         # https://en.wikipedia.org/wiki/Post/Redirect/Get
         flash("Producte actualitzat", "success")
         return redirect(url_for('main_bp.product_read', product_id = product_id))
-    else: # GET
-        return render_template('products/update.html', product_id = product_id, form = form)
+
+    return render_template('products/update.html', product_id = product_id, form = form)
 
 @main_bp.route('/products/delete/<int:product_id>',methods = ['GET', 'POST'])
 @login_required
@@ -115,8 +115,8 @@ def product_delete(product_id):
 
         flash("Producte esborrat", "success")
         return redirect(url_for('main_bp.product_list'))
-    else: # GET
-        return render_template('products/delete.html', form = form, product = product)
+    
+    return render_template('products/delete.html', form = form, product = product)
 
 
 __uploads_folder = os.path.abspath(os.path.dirname(__file__)) + "/static/products/"

@@ -12,8 +12,8 @@
 </div>
 <form class="flex w-full lg:w-1/2 flex-col lg:flex-row mx-auto items-center justify-between" action="/products/delete/{{ product.id }}" method="POST">
     {{ form.csrf_token }}
-    <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/products/list">&larr; Tornar</a>
-    <p>{{ form.submit(value="✖ Esborrar", class_="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500") }}</p>
+    <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/products/list">Tornar</a>
+    <p>{{ form.submit(value="Esborrar", class_="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500") }}</p>
     {{ render_errors(form) }}
 </form>
 

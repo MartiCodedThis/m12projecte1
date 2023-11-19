@@ -11,15 +11,15 @@
 
 <body class="bg-slate-200 text-slate-800 font-sans">
    <nav class="bg-white p-5">
-      <div class="container mx-auto flex justify-between items-center">
+      <div class="container mx-auto flex space-x-2 justify-between items-center">
          <h1 class="font-black text-5xl">Wannapop</h1>
-         <div class="flex">
+         <div class="flex space-x-2">
             {% if current_user.is_authenticated %}
-               <p>{{ current_user.name }}</p>
-               <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/logout">Log out</a>
+               <p class="block text-center py-2 px-4 my-1">{{ current_user.name }}</p>
+               <a class="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500" href="/logout">Tancar sessió</a>
             {% else %}
-               <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/login">Log in</a>
-               <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/register">Enregistrar</a>
+               <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold text-xs lg:text-base lg:w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/login">Obrir sessió</a>
+               <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold text-xs lg:text-base lg:w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/register">Crear compte</a>
             {% endif %}
          </div>
       </div>
@@ -28,11 +28,21 @@
    <div class="container mx-auto p-10">
    {% with messages = get_flashed_messages(with_categories=true) %}
    {% if messages %}
-      <div class="messages">
       {% for category, message in messages %}
-         <p class="{{ category }}">{{ message }}</p>
-      {% endfor %}
+      <div class="p-4 mb-4 rounded-lg shadow-md
+         {% if category == 'success' %}
+            bg-emerald-500 text-white
+         {% elif category == 'error' %}
+            bg-red-500 text-white
+         {% elif category == 'info' %}
+            bg-white
+         {% elif category == 'warning' %}
+            bg-yellow-500 text-white
+         {% endif %}
+      ">
+         <p>{{ message }}</p>
       </div>
+      {% endfor %}
    {% endif %}
    {% endwith %}
    <div class="bg-white p-4 rounded-lg shadow-md">
