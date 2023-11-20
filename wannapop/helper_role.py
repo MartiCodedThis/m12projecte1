@@ -6,18 +6,18 @@ from enum import Enum
 # Custom roles and actions
 class Role(str, Enum):
     admin = "admin"
-    mod = "mod"
+    moderator = "moderator"
     wanner = "wanner"
 
 class Action(str, Enum):
     create = "create"
     edit = "update"
     delete = "delete"
-    view = "list and read"
+    view = "read"
 
 # Needs
 __admin_role_need = RoleNeed(Role.admin)
-__mod_role_need = RoleNeed(Role.mod)
+__moderator_role_need = RoleNeed(Role.moderator)
 __wanner_role_need = RoleNeed(Role.wanner)
 
 __create_action_need = ActionNeed(Action.create)
@@ -27,7 +27,7 @@ __view_action_need = ActionNeed(Action.view)
 
 # Permissions
 require_admin_role = Permission(__admin_role_need)
-require_mod_role = Permission(__mod_role_need)
+require_moderator_role = Permission(__moderator_role_need)
 require_wanner_role = Permission(__wanner_role_need)
 
 require_create_permission = Permission(__create_action_need)
@@ -46,9 +46,9 @@ def on_identity_loaded(sender, identity):
             identity.provides.add(__edit_action_need)
             identity.provides.add(__delete_action_need)
             identity.provides.add(__view_action_need)
-        elif current_user.role == Role.mod:
+        elif current_user.role == Role.moderator:
             # Role needs
-            identity.provides.add(__mod_role_need)
+            identity.provides.add(__moderator_role_need)
             # Action needs
             identity.provides.add(__delete_action_need)
             identity.provides.add(__view_action_need)
@@ -61,4 +61,12 @@ def on_identity_loaded(sender, identity):
             identity.provides.add(__delete_action_need)
             identity.provides.add(__view_action_need)
         else:
-            current_app.logger.debug("Unkown role")
+            current_app.logger.debug("Rol invàlid")
+
+def notify_identity_changed():
+    if hasattr(current_user, 'email'):
+        identity = Identity(current_user.email)
+    else:
+        identity = AnonymousIdentity()
+    
+    identity_changed.send(current_app._get_current_object(), identity = identity)

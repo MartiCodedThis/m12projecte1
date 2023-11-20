@@ -4,6 +4,7 @@ from . import db_manager as db
 from . import login_manager
 from .models import User
 from .forms import LoginForm, RegisterForm
+from .helper_role import notify_identity_changed
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -25,6 +26,7 @@ def login():
         user = load_user(email)
         if user and check_password_hash(user.password, password_plain):
             login_user(user)
+            notify_identity_changed()
             flash("Benvingut a Wannapop!","success")
             return redirect(url_for('main_bp.init'))
         else:
