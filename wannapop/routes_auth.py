@@ -64,6 +64,12 @@ def logout():
     logout_user()
     return redirect(url_for("auth_bp.login"))
 
+@auth_bp.route("/profile")
+@login_required
+def profile():
+    
+    return render_template("auth/profile.html")
+
 @login_manager.user_loader
 def load_user(email):
     if email is not None:
