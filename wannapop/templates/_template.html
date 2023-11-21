@@ -18,7 +18,7 @@
                <a class="block text-center py-2 px-4 my-1" href="/profile">{{ current_user.name }}</a>
                {% if current_user.role == "admin" or current_user.role == "moderator" %}
                   <!-- Display this link only if the user is an admin -->
-                  <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/admin">Zona Admin</a>
+                  <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/admin">Zona admin</a>
                {% endif %}
                <a class="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500" href="/logout">Tancar sessió</a>
             {% else %}

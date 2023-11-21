@@ -107,7 +107,8 @@ def product_update(product_id):
             return redirect(url_for('main_bp.product_read', product_id = product_id))
 
         return render_template('products/update.html', product_id = product_id, form = form)
-    flash("No tens permís per editar aquest post", "warning")
+    
+    flash("No tens permís per editar aquest producte!", "warning")
     return redirect(url_for('main_bp.product_read', product_id = product_id))
 
 @main_bp.route('/products/delete/<int:product_id>',methods = ['GET', 'POST'])
@@ -116,17 +117,23 @@ def product_update(product_id):
 def product_delete(product_id):
     # select amb 1 resultat
     product = db.session.query(Product).filter(Product.id == product_id).one()
-
-    form = DeleteForm()
-    if form.validate_on_submit(): # si s'ha fet submit al formulari
-        # delete!
-        db.session.delete(product)
-        db.session.commit()
-
-        flash("Producte esborrat", "success")
-        return redirect(url_for('main_bp.product_list'))
     
-    return render_template('products/delete.html', form = form, product = product)
+    if(current_user.id == product.seller_id):
+
+        form = DeleteForm()
+        
+        if form.validate_on_submit(): # si s'ha fet submit al formulari
+            # delete!
+            db.session.delete(product)
+            db.session.commit()
+
+            flash("Producte esborrat", "success")
+            return redirect(url_for('main_bp.product_list'))
+        
+        return render_template('products/delete.html', form = form, product = product)
+
+    flash("No tens permís per eliminar aquest producte!", "warning")
+    return redirect(url_for('main_bp.product_read', product_id = product_id))
 
 
 __uploads_folder = os.path.abspath(os.path.dirname(__file__)) + "/static/products/"
