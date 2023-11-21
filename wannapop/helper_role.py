@@ -35,6 +35,8 @@ require_edit_permission = Permission(__edit_action_need)
 require_delete_permission = Permission(__delete_action_need)
 require_view_permission = Permission(__view_action_need)
 
+require_admin_moderator = require_admin_role.union(require_moderator_role)
+
 @identity_loaded.connect
 def on_identity_loaded(sender, identity):
     identity.user = current_user

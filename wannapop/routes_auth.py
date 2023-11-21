@@ -30,7 +30,7 @@ def login():
             flash("Benvingut a Wannapop!","success")
             return redirect(url_for('main_bp.init'))
         else:
-            flash("Error d'autenticació d'usuari. Comprova que els credencials siguin correctes!","error")
+            flash("Comprova que els credencials siguin correctes!","warning")
             return redirect(url_for('auth_bp.login'))
     
     return render_template('auth/login.html', form = form)
@@ -51,7 +51,7 @@ def register():
         db.session.add(new_user)
         try:
             db.session.commit()
-            flash("Nou compte creat! Ja pots entrar dins de Wannapop.","error")
+            flash("Nou compte creat! Ja pots entrar dins de Wannapop.","success")
             return redirect(url_for('main_bp.init'))
         except:
             db.session.rollback()

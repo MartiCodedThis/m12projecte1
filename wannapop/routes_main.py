@@ -76,34 +76,39 @@ def product_read(product_id):
 @login_required
 @require_edit_permission.require(http_exception=403)
 def product_update(product_id):
+    
     # select amb 1 resultat
     product = db.session.query(Product).filter(Product.id == product_id).one()
 
-    # select que retorna una llista de resultats
-    categories = db.session.query(Category).order_by(Category.id.asc()).all()
+    if(current_user.id == product.seller_id):
 
-    # carrego el formulari amb l'objecte products
-    form = ProductForm(obj = product)
-    form.category_id.choices = [(category.id, category.name) for category in categories]
+        # select que retorna una llista de resultats
+        categories = db.session.query(Category).order_by(Category.id.asc()).all()
 
-    if form.validate_on_submit(): # si s'ha fet submit al formulari
-        # dades del formulari a l'objecte product
-        form.populate_obj(product)
+        # carrego el formulari amb l'objecte products
+        form = ProductForm(obj = product)
+        form.category_id.choices = [(category.id, category.name) for category in categories]
 
-        # si hi ha foto
-        filename = __manage_photo_file(form.photo_file)
-        if filename:
-            product.photo = filename
+        if form.validate_on_submit(): # si s'ha fet submit al formulari
+            # dades del formulari a l'objecte product
+            form.populate_obj(product)
 
-        # update!
-        db.session.add(product)
-        db.session.commit()
+            # si hi ha foto
+            filename = __manage_photo_file(form.photo_file)
+            if filename:
+                product.photo = filename
 
-        # https://en.wikipedia.org/wiki/Post/Redirect/Get
-        flash("Producte actualitzat", "success")
-        return redirect(url_for('main_bp.product_read', product_id = product_id))
+            # update!
+            db.session.add(product)
+            db.session.commit()
 
-    return render_template('products/update.html', product_id = product_id, form = form)
+            # https://en.wikipedia.org/wiki/Post/Redirect/Get
+            flash("Producte actualitzat", "success")
+            return redirect(url_for('main_bp.product_read', product_id = product_id))
+
+        return render_template('products/update.html', product_id = product_id, form = form)
+    flash("No tens permís per editar aquest post", "warning")
+    return redirect(url_for('main_bp.product_read', product_id = product_id))
 
 @main_bp.route('/products/delete/<int:product_id>',methods = ['GET', 'POST'])
 @login_required
