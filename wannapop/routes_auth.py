@@ -5,7 +5,7 @@ from . import login_manager
 
 from .models import User
 from .forms import LoginForm, RegisterForm
-from .helper_role import notify_identity_changed
+#from .helper_role import notify_identity_changed
 from . import mail_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets

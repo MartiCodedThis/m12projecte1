@@ -22,7 +22,6 @@ def create_app():
     # Inicialitza els plugins
     db_manager.init_app(app)
     login_manager.init_app(app)
-    db_manager.init_app(app)
     principal_manager.init_app(app)
     mail_manager.init_app(app)
 
