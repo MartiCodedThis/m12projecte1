@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, current_app
 from flask_login import current_user, login_required
 from .models import Product, Category
 from .forms import ProductForm, DeleteForm
@@ -16,14 +16,17 @@ main_bp = Blueprint(
 @main_bp.route('/')
 def init():
     if current_user.is_authenticated:
+        current_app.logger.debug('Redirecting to product list')
         return redirect(url_for('main_bp.product_list'))
     else:
+        current_app.logger.debug('Redirecting to log-in page')
         return redirect(url_for('auth_bp.login'))
 
 @main_bp.route('/products/list')
 @login_required
 def product_list():
     # select amb join que retorna una llista dwe resultats
+    current_app.logger.debug('Loading product list...')
     products_with_category = db.session.query(Product, Category).join(Category).order_by(Product.id.asc()).all()
     
     return render_template('products/list.html', products_with_category = products_with_category)
@@ -40,6 +43,7 @@ def product_create():
     form.category_id.choices = [(category.id, category.name) for category in categories]
 
     if form.validate_on_submit(): # si s'ha fet submit al formulari
+        current_app.logger.debug('Creating product listing...')
         new_product = Product()
         new_product.seller_id = current_user.id # en un el futur tindrà l'id de l'usuari autenticat
 
@@ -51,13 +55,14 @@ def product_create():
         if filename:
             new_product.photo = filename
         else:
+            current_app.logger.debug('No image input found, setting to default')
             new_product.photo = "no_image.png"
 
         # insert!
         db.session.add(new_product)
         db.session.commit()
 
-        # https://en.wikipedia.org/wiki/Post/Redirect/Get
+        current_app.logger.debug('Product creation successful! Redirecting')
         flash("Nou producte creat", "success")
         return redirect(url_for('main_bp.product_list'))
     
@@ -68,6 +73,7 @@ def product_create():
 @require_view_permission.require(http_exception=403)
 def product_read(product_id):
     # select amb join i 1 resultat
+    current_app.logger.debug('Loading product details... (ID = '+product_id+')')
     (product, category) = db.session.query(Product, Category).join(Category).filter(Product.id == product_id).one()
     
     return render_template('products/read.html', product = product, category = category)
@@ -76,7 +82,7 @@ def product_read(product_id):
 @login_required
 @require_edit_permission.require(http_exception=403)
 def product_update(product_id):
-    
+    current_app.logger.debug('Loading product details... (ID = '+product_id+')')
     # select amb 1 resultat
     product = db.session.query(Product).filter(Product.id == product_id).one()
 
@@ -90,6 +96,7 @@ def product_update(product_id):
         form.category_id.choices = [(category.id, category.name) for category in categories]
 
         if form.validate_on_submit(): # si s'ha fet submit al formulari
+            current_app.logger.debug('Updating product listing...')
             # dades del formulari a l'objecte product
             form.populate_obj(product)
 
@@ -102,12 +109,13 @@ def product_update(product_id):
             db.session.add(product)
             db.session.commit()
 
-            # https://en.wikipedia.org/wiki/Post/Redirect/Get
+            current_app.logger.debug('Product update successful! Redirecting')
             flash("Producte actualitzat", "success")
             return redirect(url_for('main_bp.product_read', product_id = product_id))
 
         return render_template('products/update.html', product_id = product_id, form = form)
     
+    current_app.logger.debug('Access denied: user is not the product owner')
     flash("No tens permís per editar aquest producte!", "warning")
     return redirect(url_for('main_bp.product_read', product_id = product_id))
 
@@ -131,7 +139,8 @@ def product_delete(product_id):
             return redirect(url_for('main_bp.product_list'))
         
         return render_template('products/delete.html', form = form, product = product)
-
+    
+    current_app.logger.debug('Access denied: user is not the product owner')
     flash("No tens permís per eliminar aquest producte!", "warning")
     return redirect(url_for('main_bp.product_read', product_id = product_id))
 

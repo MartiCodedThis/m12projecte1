@@ -1,4 +1,5 @@
 import smtplib, ssl
+from flask import current_app
 from email.message import EmailMessage
 from email.utils import formataddr
 
@@ -11,12 +12,6 @@ class MailManager:
         self.sender_password = "uttVEcUemINNCX47"
         self.smtp_server = "smtp.gmail.com"
         self.smtp_port = 587
-
-        print(f"self.sender_addr: {self.sender_addr}")
-        print(f"self.sender_password: {self.sender_password}")
-        print(f"self.smtp_server: {self.smtp_server}")
-        print(f"self.smtp_port: {self.smtp_port}")
-
 
         # els missatges de contacte s'envien a aquesta adreça
         self.contact_addr = app.config.get('CONTACT_ADDR')
@@ -60,10 +55,10 @@ class MailManager:
 
                 server.send_message(msg, from_addr=self.sender_addr, to_addrs=dst_addr)
         except smtplib.SMTPConnectError as e:
-            print(f"SMTP connection error: {e}")
+            current_app.logger.debug("SMTP connection error: "+e)
         except smtplib.SMTPServerDisconnected as e:
-            print(f"SMTP server disconnected: {e}")
+            current_app.logger.debug("SMTP server disconnected: "+e)
         except smtplib.SMTPException as e:
-            print(f"SMTP error occurred: {e}")
+            current_app.logger.debug("SMTP general error: "+e)
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            current_app.logger.debug("Unknown error: "+e)

@@ -1,10 +1,10 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, flash
+from flask import Flask, Blueprint, render_template, redirect, url_for, flash, current_app
 from flask_login import current_user, login_user, login_required, logout_user
 from . import db_manager as db
 from . import login_manager
 from .models import User
 from .forms import LoginForm, RegisterForm
-#from .helper_role import notify_identity_changed
+from .helper_role import notify_identity_changed
 from . import mail_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
@@ -17,11 +17,13 @@ auth_bp = Blueprint(
 @auth_bp.route('/login', methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
+        current_app.logger.debug('User already in session, redirecting')
         return redirect(url_for("main_bp.init"))
 
     form =  LoginForm()
 
     if form.validate_on_submit():
+        current_app.logger.debug('Logging user...')
         email = form.email.data
         password_plain = form.password.data
 
@@ -29,9 +31,11 @@ def login():
         if user and check_password_hash(user.password, password_plain):
             login_user(user)
             notify_identity_changed()
+            current_app.logger.debug('Log-in successful!')
             flash("Benvingut a Wannapop!","success")
             return redirect(url_for('main_bp.init'))
         else:
+            current_app.logger.debug('Log-in error, check credentials for errors')
             flash("Comprova que els credencials siguin correctes!","warning")
             return redirect(url_for('auth_bp.login'))
     
@@ -40,11 +44,13 @@ def login():
 @auth_bp.route('/register', methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
+        current_app.logger.debug('User already in session, redirecting')
         return redirect(url_for("main_bp.init"))
 
     form =  RegisterForm()
 
     if form.validate_on_submit():
+        current_app.logger.debug('Registering new user...')
         name = form.name.data
         email = form.email.data
         password = generate_password_hash(form.password.data)
@@ -62,10 +68,12 @@ def register():
 
         try:
             db.session.commit()
+            current_app.logger.debug('User registered to DB, check mail to verify')
             flash("Nou compte creat! Ja pots entrar dins de Wannapop.","success")
             return redirect(url_for('main_bp.init'))
         except:
            db.session.rollback()
+           current_app.logger.debug('Register error, DB changes rolled back')
            flash("Error en la creació del compte.","error")
 
 
@@ -86,6 +94,7 @@ def profile():
 @login_manager.user_loader
 def load_user(email):
     if email is not None:
+        current_app.logger.debug('Checking for user \"'+email+'\"...')
         user_exists = db.session.query(User).filter(User.email == email).one_or_none()
         return user_exists
     return None

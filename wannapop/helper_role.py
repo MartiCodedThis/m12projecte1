@@ -63,7 +63,7 @@ def on_identity_loaded(sender, identity):
             identity.provides.add(__delete_action_need)
             identity.provides.add(__view_action_need)
         else:
-            current_app.logger.debug("Rol invàlid")
+            current_app.logger.debug("Error: invalid role")
 
 def notify_identity_changed():
     if hasattr(current_user, 'email'):

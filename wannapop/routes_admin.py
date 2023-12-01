@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, current_app
 from flask_login import current_user, login_required
 from .models import User
 from .helper_role import require_admin_moderator, require_admin_role
@@ -19,5 +19,6 @@ def admin_index():
 @login_required
 @require_admin_role.require(http_exception=403)
 def admin_users():
+    current_app.logger.debug('Loading user list...')
     users = db.session.query(User).all()
     return render_template('users_list.html', users=users)
