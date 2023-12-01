@@ -5,6 +5,7 @@ from .forms import ProductForm, DeleteForm
 from .helper_role import require_view_permission, require_create_permission, require_edit_permission, require_delete_permission
 from werkzeug.utils import secure_filename
 from . import db_manager as db
+from config import Config
 import uuid
 import os
 

@@ -1,10 +1,10 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, flash
+from flask import Flask, Blueprint,  current_app, render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
 from . import db_manager as db
 from . import login_manager
 from .models import User
 from .forms import LoginForm, RegisterForm
-#from .helper_role import notify_identity_changed
+from .helper_role import notify_identity_changed
 from . import mail_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
@@ -45,6 +45,9 @@ def register():
     form =  RegisterForm()
 
     if form.validate_on_submit():
+
+        current_app.logger.debug('Form validated')
+
         name = form.name.data
         email = form.email.data
         password = generate_password_hash(form.password.data)
@@ -53,12 +56,12 @@ def register():
         verified = 0
         
         new_user = User(name=name, email=email, password=password, role=role, email_token=email_token, verified=verified)
-        print(f"DADES DE L'USUARI: {new_user.name, new_user.email, new_user.password, new_user.role, new_user.email_token, new_user.verified}")
+        current_app.logger.debug(f"DADES DE L'USUARI: {new_user.name, new_user.email, new_user.password, new_user.role, new_user.email_token, new_user.verified}")
         db.session.add(new_user)
 
-        verification_url = f"/verify/{name}/{email_token}"
-        message = f"Benvingut/da a Wannapop! Entra al següent enllaç per verificar el teu compte: {verification_url}"
-        mail_manager.send_contact_msg(message)
+        # verification_url = f"/verify/{name}/{email_token}"
+        # message = f"Benvingut/da a Wannapop! Entra al següent enllaç per verificar el teu compte: {verification_url}"
+        # mail_manager.send_contact_msg(message)
 
         try:
             db.session.commit()

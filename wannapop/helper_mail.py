@@ -17,6 +17,13 @@ class MailManager:
         print(f"self.smtp_server: {self.smtp_server}")
         print(f"self.smtp_port: {self.smtp_port}")
 
+        # MAIL_SENDER_NAME="Wannapop"
+        # MAIL_SENDER_ADDR="2daw.equip06@fp.insjoaquimmir.cat"
+        # MAIL_SENDER_PASSWORD="uttVEcUemINNCX47"
+        # MAIL_SMTP_SERVER="smtp.gmail.com"
+        # MAIL_SMTP_PORT=587
+        # CONTACT_ADDR="2daw.equip06@fp.insjoaquimmir.cat"
+        # EXTERNAL_URL="http://127.0.0.1:5000"
 
         # els missatges de contacte s'envien a aquesta adreça
         self.contact_addr = app.config.get('CONTACT_ADDR')
