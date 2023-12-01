@@ -5,7 +5,6 @@ from .forms import ProductForm, DeleteForm
 from .helper_role import require_view_permission, require_create_permission, require_edit_permission, require_delete_permission
 from werkzeug.utils import secure_filename
 from . import db_manager as db
-from config import Config
 import uuid
 import os
 
@@ -74,7 +73,7 @@ def product_create():
 @require_view_permission.require(http_exception=403)
 def product_read(product_id):
     # select amb join i 1 resultat
-    current_app.logger.debug('Loading product details... (ID = '+product_id+')')
+    current_app.logger.debug('Loading product details... (ID = '+str(product_id)+')')
     (product, category) = db.session.query(Product, Category).join(Category).filter(Product.id == product_id).one()
     
     return render_template('products/read.html', product = product, category = category)
@@ -83,7 +82,7 @@ def product_read(product_id):
 @login_required
 @require_edit_permission.require(http_exception=403)
 def product_update(product_id):
-    current_app.logger.debug('Loading product details... (ID = '+product_id+')')
+    current_app.logger.debug('Loading product details... (ID = '+str(product_id)+')')
     # select amb 1 resultat
     product = db.session.query(Product).filter(Product.id == product_id).one()
 

@@ -6,7 +6,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Config params
 SECRET_KEY = "Valor aleatori molt llarg i super secret"
 SQLALCHEMY_DATABASE_URI = "sqlite:///"+os.path.join(basedir, "../database.db")
-SQLALCHEMY_ECHO = True
+SQLALCHEMY_ECHO = False 
 
 MAIL_SENDER_NAME = environ.get('MAIL_SENDER_NAME')
 MAIL_SENDER_ADDR = environ.get('MAIL_SENDER_ADDR')

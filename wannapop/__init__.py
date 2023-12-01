@@ -30,7 +30,6 @@ def create_app():
     login_manager.init_app(app)
     principal_manager.init_app(app)
     mail_manager.init_app(app)
-    db_manager.init_app(app)
     toolbar.init_app(app)
     
 
