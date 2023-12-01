@@ -2,11 +2,13 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_principal import Principal
+from .helper_mail import MailManager
 import os
 
 db_manager = SQLAlchemy()
 login_manager = LoginManager()
 principal_manager =  Principal()
+mail_manager = MailManager()
 
 def create_app():
     # Construct the core app object
@@ -18,8 +20,8 @@ def create_app():
 
     # Inicialitza els plugins
     login_manager.init_app(app)
-    db_manager.init_app(app)
     principal_manager.init_app(app)
+    mail_manager.init_app(app)
 
     with app.app_context():
         from . import routes_main, routes_auth, routes_admin

@@ -27,6 +27,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     role = db.Column(db.String, nullable = False)
+    email_token = db.Column(db.String)
+    verified = db.Column(db.Integer)
     
     def get_id(self):
         return self.email
