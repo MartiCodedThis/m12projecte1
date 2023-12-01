@@ -59,12 +59,12 @@ def register():
         verified = 0
         
         new_user = User(name=name, email=email, password=password, role=role, email_token=email_token, verified=verified)
-        print(f"DADES DE L'USUARI: {new_user.name, new_user.email, new_user.password, new_user.role, new_user.email_token, new_user.verified}")
+        current_app.logger.debug(f"DADES DE L'USUARI: {new_user.name, new_user.email, new_user.password, new_user.role, new_user.email_token, new_user.verified}")
         db.session.add(new_user)
 
-        verification_url = f"/verify/{name}/{email_token}"
-        message = f"Benvingut/da a Wannapop! Entra al següent enllaç per verificar el teu compte: {verification_url}"
-        mail_manager.send_contact_msg(message)
+        # verification_url = f"/verify/{name}/{email_token}"
+        # message = f"Benvingut/da a Wannapop! Entra al següent enllaç per verificar el teu compte: {verification_url}"
+        # mail_manager.send_contact_msg(message)
 
         try:
             db.session.commit()
