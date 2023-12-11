@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, current_app, flash, redirect, url_for
 from flask_login import current_user, login_required
-from .models import User, Product, BannedProduct
-from .forms import BanForm, UnbanForm
+from .models import User, BlockedUser, Product, BannedProduct
+from .forms import BanForm, UnbanForm, BlockUserForm
 from .helper_role import require_admin_moderator, require_admin_role
 from . import db_manager as db
 
@@ -20,9 +20,46 @@ def admin_index():
 @login_required
 @require_admin_role.require(http_exception=403)
 def admin_users():
-    current_app.logger.debug('Loading user list...')
+    form = BlockUserForm()
+        
+    blocked_users = BlockedUser.query.all()
     users = db.session.query(User).all()
-    return render_template('users_list.html', users=users)
+
+    return render_template('users_list.html', users=users, form=form, blocked_users = blocked_users)
+
+@admin_bp.route('/admin/users/<int:user_id>/block', methods=['POST'])
+@login_required
+@require_admin_role.require(http_exception=403)
+def admin_block(user_id):
+    form = BlockUserForm()
+    
+    if form.validate_on_submit(): 
+        target_user = db.session.query(User).get(user_id)
+        if target_user:
+            message = form.message.data
+            blocked_user = BlockedUser(user_id=user_id, message=message)
+            db.session.add(blocked_user)
+            db.session.commit()
+
+    
+    blocked_users = BlockedUser.query.all()
+    users = db.session.query(User).all()
+    return render_template('users_list.html', users=users, form=form,blocked_users = blocked_users )
+
+@admin_bp.route('/admin/users/<int:user_id>/unblock', methods=['POST'])
+@login_required
+@require_admin_role.require(http_exception=403)
+def admin_unblock(user_id):
+    form = BlockUserForm()
+    target_user = db.session.query(User).get(user_id)
+    if target_user:
+        blocked_user = BlockedUser.query.filter_by(user_id=user_id).first()
+        if blocked_user:
+            db.session.delete(blocked_user)
+            db.session.commit()
+
+    users = db.session.query(User).all()
+    return render_template('users_list.html', users=users, form=form)
 
 @admin_bp.route('/admin/products')
 @login_required

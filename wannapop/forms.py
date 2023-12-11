@@ -59,3 +59,12 @@ class BanForm(FlaskForm):
 
 class UnbanForm(FlaskForm):
     submit = SubmitField()
+
+class BlockUserForm(FlaskForm):
+    user_id = HiddenField(
+        validators=[DataRequired()]
+    )
+    message = StringField(
+        validators=[DataRequired()]
+    )
+    submit = SubmitField()
