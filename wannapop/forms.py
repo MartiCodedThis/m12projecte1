@@ -50,3 +50,12 @@ class ProductForm(FlaskForm):
 # Formulari generic per esborrar i aprofitar la CSRF Protection
 class DeleteForm(FlaskForm):
     submit = SubmitField()
+
+class BanForm(FlaskForm):
+    reason = StringField(
+        validators = [DataRequired()]
+    )
+    submit = SubmitField()
+
+class UnbanForm(FlaskForm):
+    submit = SubmitField()
