@@ -12,6 +12,11 @@
       <p>{{ current_user.email }}</p>
       <h3 class="font-semibold text-slate-400">Rol</h3>
       <p>{{ current_user.role }} </p>
+      {% if blocked_user %}
+      <h3 class="font-semibold text-slate-400">Motiu del bloqueig</h3>
+      </br>
+      <p>{{blocked_user}}</p>
+      {% endif %}
    </div>
    
 </div>

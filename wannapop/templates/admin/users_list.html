@@ -8,6 +8,7 @@
             <th>ID</th>
             <th>Nom</th>
             <th>Rol</th>
+            <th>Moderació</th>
         </tr>
     </thead>
     {% for user in users %}
@@ -16,6 +17,31 @@
             <td>{{ user.id }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
+            <td>
+                {% set ns = namespace(is_blocked = false) %}
+                {% for blocked_user in blocked_users %}
+                    {% if user.id == blocked_user['user_id'] %}
+                        <form action="{{ url_for('admin_bp.admin_unblock', user_id=user.id) }}" method="POST">
+                            <p>Missatge de bloqueig: {{ blocked_user['message'] }}</p>
+                            {{ form.csrf_token }}
+                            {{ form.user_id(value="{{user.id}}") }}
+                            <p>{{ form.submit(value="Unblock", class_="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500") }}</p>
+                        </form>
+                    {% set ns.is_blocked = true %}
+
+                    {% endif %}
+                    
+                {% endfor %}
+                {% if ns.is_blocked == false  %}
+                <form action="{{ url_for('admin_bp.admin_block', user_id=user.id) }}" method="POST">
+                    {{ form.csrf_token }}
+                    {{ form.user_id(value="{{user.id}}") }}
+                    <p>{{ form.message.label(class_="font-semibold text-slate-400") }}</p>
+                    <p>{{ form.message(value=" ", class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
+                    <p>{{ form.submit(value="Block", class_="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500") }}</p>
+                </form>
+                {% endif %}
+            </td>
         </tr>
     </tbody>
     {% endfor %}

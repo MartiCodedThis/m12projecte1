@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, render_template, redirect, url_for, flash, c
 from flask_login import current_user, login_user, login_required, logout_user
 from . import db_manager as db
 from . import login_manager
-from .models import User
+from .models import User, BlockedUser
 from .forms import LoginForm, RegisterForm
 from .helper_role import notify_identity_changed
 from . import mail_manager
@@ -88,8 +88,8 @@ def logout():
 @auth_bp.route("/profile")
 @login_required
 def profile():
-    
-    return render_template("auth/profile.html")
+    blocked_user = BlockedUser.query.filter_by(user_id=current_user.id).first()
+    return render_template("auth/profile.html", blocked_user = blocked_user)
 
 @login_manager.user_loader
 def load_user(email):

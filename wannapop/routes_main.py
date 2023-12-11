@@ -73,7 +73,7 @@ def product_create():
 @require_view_permission.require(http_exception=403)
 def product_read(product_id):
     # select amb join i 1 resultat
-    current_app.logger.debug('Loading product details... (ID = '+str(product_id)+')')
+    current_app.logger.debug('Loading product details... (ID = '+str(product_id)+')') 
     (product, category) = db.session.query(Product, Category).join(Category).filter(Product.id == product_id).one()
     
     return render_template('products/read.html', product = product, category = category)
