@@ -90,9 +90,8 @@ def logout():
 def profile():
     tupled_message = BlockedUser.query.filter_by(user_id=current_user.id).with_entities(BlockedUser.message).first()
     
-
     if(not tupled_message):
-        message = "not blocked"
+        message = "Not blocked"
     else:
         message = tupled_message[0]
     

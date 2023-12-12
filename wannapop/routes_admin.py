@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, current_app, flash, redirect, url_
 from flask_login import current_user, login_required
 from .models import User, BlockedUser, Product, BannedProduct
 from .forms import BanForm, UnbanForm, BlockUserForm
-from .helper_role import require_admin_moderator, require_admin_role
+from .helper_role import require_admin_moderator, require_admin_role, require_moderator_role
 from . import db_manager as db
 
 # Blueprint
@@ -63,7 +63,7 @@ def admin_unblock(user_id):
 
 @admin_bp.route('/admin/products')
 @login_required
-@require_admin_role.require(http_exception=403)
+@require_moderator_role.require(http_exception=403)
 def admin_products():
     current_app.logger.debug('Loading product list...')
     products = db.session.query(Product).all()
@@ -74,7 +74,7 @@ def admin_products():
 
 @admin_bp.route('/admin/products/<int:product_id>/ban', methods = ['GET', 'POST'])
 @login_required
-@require_admin_role.require(http_exception=403)
+@require_moderator_role.require(http_exception=403)
 def ban_product(product_id):
     product = db.session.query(Product).filter(Product.id == product_id).one()
 
@@ -95,7 +95,7 @@ def ban_product(product_id):
 
 @admin_bp.route('/admin/products/<int:product_id>/unban', methods = ['GET', 'POST'])
 @login_required
-@require_admin_role.require(http_exception=403)
+@require_moderator_role.require(http_exception=403)
 def unban_product(product_id):
     product = db.session.query(Product).filter(Product.id == product_id).one()
     ban = db.session.query(BannedProduct).filter(BannedProduct.product_id == product_id).one()

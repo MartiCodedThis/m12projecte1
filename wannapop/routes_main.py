@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, current_app
 from flask_login import current_user, login_required
-from .models import Product, Category, BlockedUser
+from .models import Product, Category, BlockedUser, BannedProduct
 from .forms import ProductForm, DeleteForm
 from .helper_role import require_view_permission, require_create_permission, require_edit_permission, require_delete_permission
 from werkzeug.utils import secure_filename
@@ -77,7 +77,11 @@ def product_create():
 @require_view_permission.require(http_exception=403)
 def product_read(product_id):
     # select amb join i 1 resultat
-    current_app.logger.debug('Loading product details... (ID = '+str(product_id)+')') 
+    current_app.logger.debug('Loading product details... (ID = '+str(product_id)+')')
+    # mirar si esta banejat
+    if check_ban(product_id):
+        return redirect(url_for('main_bp.product_list'))
+
     (product, category) = db.session.query(Product, Category).join(Category).filter(Product.id == product_id).one()
     
     return render_template('products/read.html', product = product, category = category)
@@ -87,6 +91,10 @@ def product_read(product_id):
 @require_edit_permission.require(http_exception=403)
 def product_update(product_id):
     current_app.logger.debug('Loading product details... (ID = '+str(product_id)+')')
+    # mirar si esta banejat
+    if check_ban(product_id):
+        return redirect(url_for('main_bp.product_list'))
+    
     # select amb 1 resultat
     product = db.session.query(Product).filter(Product.id == product_id).one()
 
@@ -127,6 +135,10 @@ def product_update(product_id):
 @login_required
 @require_delete_permission.require(http_exception=403)
 def product_delete(product_id):
+    # mirar si esta banejat
+    if check_ban(product_id):
+        return redirect(url_for('main_bp.product_list'))
+    
     # select amb 1 resultat
     product = db.session.query(Product).filter(Product.id == product_id).one()
     
@@ -164,3 +176,10 @@ def __manage_photo_file(photo_file):
             return unique_filename
 
     return None
+
+def check_ban(product_id):
+    banned = db.session.query(BannedProduct).filter(BannedProduct.product_id == product_id).first()
+    if banned:
+        flash("Producte banejat. Raó: "+banned.reason, "warning")
+        current_app.logger.debug('This product is banned. Reason: '+banned.reason)
+        return True

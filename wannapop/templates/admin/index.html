@@ -2,8 +2,11 @@
 
 {% block content %}
 <h2 class="text-3xl mb-5 font-bold">{% block title %}Zona admin{% endblock %}</h2>
-<div class="w-full lg:w-1/2 mx-auto mb-5">
-    <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/admin/users">Mostrar usuaris</a>
-    <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/admin/products">Mostrar productes</a>  
+<div class="flex w-full flex-col lg:flex-row mx-auto justify-start">
+    <div class="flex flex-col">
+        <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/admin/users">Mostrar usuaris</a>
+        <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/admin/products">Mostrar productes</a>      
+        <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/products/list">Tornar</a>
+    </div>
 </div>
 {% endblock %}
