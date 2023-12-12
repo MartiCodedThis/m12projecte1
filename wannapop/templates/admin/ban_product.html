@@ -1,0 +1,21 @@
+{% extends '_template.html' %}
+{% from "_formhelpers.html" import render_errors %}
+{% block content %}
+
+<h2 class="text-3xl mb-5 font-bold">{% block title %}Banejar producte{% endblock %}</h2>
+<div class="flex flex-col w-full items-center mb-4">
+    <p class="mb-4">Confirma que vols banejar aquest producte:</p>
+    <p class="text-xl font-bold">"{{ product.title }}"</p>
+</div>
+<form class="w-full lg:w-1/2 mx-auto mb-5" action="/admin/products/{{ product.id }}/ban" method="POST">
+    {{ form.csrf_token }}
+    {{ render_errors(form) }}
+        <p>{{ form.reason.label(class_="font-semibold text-slate-400") }}</p>
+        <p>{{ form.reason(class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
+    <div class="flex w-full flex-col lg:flex-row items-center justify-between">
+        <a class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500" href="/admin/products">Tornar</a>
+        <p>{{ form.submit(value="Banejar", class_="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500") }}</p>
+    </div>
+</form>
+
+{% endblock %}

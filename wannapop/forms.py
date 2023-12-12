@@ -51,6 +51,15 @@ class ProductForm(FlaskForm):
 class DeleteForm(FlaskForm):
     submit = SubmitField()
 
+class BanForm(FlaskForm):
+    reason = StringField(
+        validators = [DataRequired()]
+    )
+    submit = SubmitField()
+
+class UnbanForm(FlaskForm):
+    submit = SubmitField()
+
 class BlockUserForm(FlaskForm):
     user_id = HiddenField(
         validators=[DataRequired()]

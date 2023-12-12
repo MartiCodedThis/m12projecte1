@@ -1,0 +1,35 @@
+{% extends '_template.html' %}
+
+{% block content %}
+<h2 class="text-3xl mb-5 font-bold">{% block title %}Products{% endblock %}</h2>
+<table class="w-full divide-y divide-slate-200">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Títol</th>
+            <th>Enllaç</th>
+            <th>Creat</th>
+            <th>Actualitzat</th>
+            <th>Accions</th>
+        </tr>
+    </thead>
+    {% for product in products %}
+    <tbody class="bg-white divide-y divide-slate-200">
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.title }}</td>
+            <td><a href="/products/read/{{ product.id }}">/products/read/{{ product.id }}</a></td>
+            <td>{{ product.created }}</td>
+            <td>{{ product.updated }}</td>
+            <td>
+                {% if product.banned %}
+                    <a href="/admin/products/{{ product.id }}/unban" class="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 mx-auto my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500">Desbanejar</a>
+                {% else %}
+                    <a href="/admin/products/{{ product.id }}/ban" class="block bg-red-200 hover:bg-red-500 text-red-800 hover:text-white font-semibold w-48 py-2 px-4 mx-auto my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500">Banejar</a>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
+{% endblock %}
