@@ -19,3 +19,4 @@ CONTACT_ADDR = environ.get('CONTACT_ADDR')
 EXTERNAL_URL = environ.get('EXTERNAL_URL')
 
 DEBUG = environ.get('DEBUG', False)
+DEBUG_TB_INTERCEPT_REDIRECTS = False
