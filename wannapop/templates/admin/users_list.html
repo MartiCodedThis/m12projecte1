@@ -22,7 +22,7 @@
                 {% for blocked_user in blocked_users %}
                     {% if user.id == blocked_user['user_id'] %}
                         <form action="{{ url_for('admin_bp.admin_unblock', user_id=user.id) }}" method="POST">
-                            <p>Missatge de bloqueig: {{ blocked_user['message'] }}</p>
+                            <p class="py-4">Motiu del bloqueig: {{ blocked_user['message'] }}</p>
                             {{ form.csrf_token }}
                             {{ form.user_id(value="{{user.id}}") }}
                             <p>{{ form.submit(value="Desbloquejar", class_="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 mx-auto mb-2 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500") }}</p>
@@ -36,9 +36,9 @@
                 <form action="{{ url_for('admin_bp.admin_block', user_id=user.id) }}" method="POST">
                     {{ form.csrf_token }}
                     {{ form.user_id(value="{{user.id}}") }}
-                    <p>{{ form.message.label(class_="font-semibold text-slate-400") }}</p>
+                    <p class="py-2">{{ form.message.label(class_="font-semibold text-slate-400") }}</p>
                     <p>{{ form.message(value=" ", class_="w-full h-8 border-2 rounded-full px-2 mb-2 shadow-inner") }}</p>
-                    <p>{{ form.submit(value="Bloquejar", class_="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 mx-auto mb-2 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500") }}</p>
+                    <p class="pb-4">{{ form.submit(value="Block", class_="block bg-slate-200 hover:bg-emerald-500 text-slate-800 hover:text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-emerald-800 outline-none active:ring-2 active:ring-emerald-500") }}</p>
                 </form>
                 {% endif %}
             </td>

@@ -88,8 +88,15 @@ def logout():
 @auth_bp.route("/profile")
 @login_required
 def profile():
-    blocked_user = BlockedUser.query.filter_by(user_id=current_user.id).first()
-    return render_template("auth/profile.html", blocked_user = blocked_user)
+    tupled_message = BlockedUser.query.filter_by(user_id=current_user.id).with_entities(BlockedUser.message).first()
+    
+
+    if(not tupled_message):
+        message = "not blocked"
+    else:
+        message = tupled_message[0]
+    
+    return render_template("auth/profile.html", message = message)
 
 @login_manager.user_loader
 def load_user(email):
