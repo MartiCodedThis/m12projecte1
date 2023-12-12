@@ -4,18 +4,20 @@
 
 <h2 class="text-3xl mb-5 font-bold">{% block title %}Benvingut al teu perfil, {{ current_user.name }}!{% endblock %}</h2>
 <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 mb-4">
-
+   
    <div class="lg:w-2/3">
+      {% if message != 'not blocked' %}
+         <p class="block bg-red-500 text-white font-semibold w-48 py-2 px-4 my-1 text-center rounded-md shadow-md active:bg-red-800 outline-none active:ring-2 active:ring-red-500" >USUARI BLOQUEJAT</p>
+      {% endif %}
       <h3 class="font-semibold text-slate-400">Nom</h3>
       <p>{{ current_user.name }}</p>
       <h3 class="font-semibold text-slate-400">Correu</h3>
       <p>{{ current_user.email }}</p>
       <h3 class="font-semibold text-slate-400">Rol</h3>
       <p>{{ current_user.role }} </p>
-      {% if blocked_user %}
-      <h3 class="font-semibold text-slate-400">Motiu del bloqueig</h3>
-      </br>
-      <p>{{blocked_user}}</p>
+      {% if message != 'not blocked' %}
+         <h3 class="font-semibold text-slate-400">Motiu del bloqueig</h3>
+         <p>{{message}}</p>
       {% endif %}
    </div>
    

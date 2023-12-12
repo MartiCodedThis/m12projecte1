@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, current_app
 from flask_login import current_user, login_required
-from .models import Product, Category
+from .models import Product, Category, BlockedUser
 from .forms import ProductForm, DeleteForm
 from .helper_role import require_view_permission, require_create_permission, require_edit_permission, require_delete_permission
 from werkzeug.utils import secure_filename
@@ -35,6 +35,10 @@ def product_list():
 @login_required
 @require_create_permission.require(http_exception=403)
 def product_create(): 
+    is_blocked = BlockedUser.query.filter_by(user_id=current_user.id).first()
+    if(is_blocked):
+        flash("Ususari Bloquejat", "error")
+        return redirect(url_for('main_bp.product_list'))
     # select que retorna una llista de resultats
     categories = db.session.query(Category).order_by(Category.id.asc()).all()
 
