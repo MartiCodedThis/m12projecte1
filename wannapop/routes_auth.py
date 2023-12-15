@@ -91,7 +91,7 @@ def profile():
     tupled_message = BlockedUser.query.filter_by(user_id=current_user.id).with_entities(BlockedUser.message).first()
     
     if(not tupled_message):
-        message = "Not blocked"
+        message = None
     else:
         message = tupled_message[0]
     
@@ -100,7 +100,6 @@ def profile():
 @login_manager.user_loader
 def load_user(email):
     if email is not None:
-        current_app.logger.debug('Checking for user \"'+email+'\"...')
         user_exists = db.session.query(User).filter(User.email == email).one_or_none()
         return user_exists
     return None

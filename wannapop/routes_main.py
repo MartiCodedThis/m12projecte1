@@ -37,7 +37,7 @@ def product_list():
 def product_create(): 
     is_blocked = BlockedUser.query.filter_by(user_id=current_user.id).first()
     if(is_blocked):
-        flash("Ususari Bloquejat", "error")
+        flash("El teu compte es troba bloquejat. Raó: "+is_blocked.message, "warning")
         return redirect(url_for('main_bp.product_list'))
     # select que retorna una llista de resultats
     categories = db.session.query(Category).order_by(Category.id.asc()).all()

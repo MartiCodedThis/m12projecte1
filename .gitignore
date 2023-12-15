@@ -2,3 +2,5 @@
 .vscode
 __pycache__
 convert.py
+app.log
+app.log*.*
