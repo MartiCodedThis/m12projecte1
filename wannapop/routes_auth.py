@@ -60,7 +60,7 @@ def register():
         
         new_user = User(name=name, email=email, password=password, role=role, email_token=email_token, verified=verified)
         current_app.logger.debug(f"DADES DE L'USUARI: {new_user.name, new_user.email, new_user.password, new_user.role, new_user.email_token, new_user.verified}")
-        db.session.add(new_user)
+        User.save(new_user)
 
         # verification_url = f"/verify/{name}/{email_token}"
         # message = f"Benvingut/da a Wannapop! Entra al següent enllaç per verificar el teu compte: {verification_url}"
@@ -100,7 +100,7 @@ def profile():
 @login_manager.user_loader
 def load_user(email):
     if email is not None:
-        user_exists = db.session.query(User).filter(User.email == email).one_or_none()
+        user_exists = User.get_filtered_by(User.email == email)
         return user_exists
     return None
 

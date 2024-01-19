@@ -22,8 +22,8 @@ def admin_index():
 def admin_users():
     form = BlockUserForm()
         
-    blocked_users = BlockedUser.query.all()
-    users = db.session.query(User).all()
+    blocked_users = BlockedUser.get_all()
+    users = User.get_all()
 
     return render_template('users_list.html', users=users, form=form, blocked_users = blocked_users)
 
@@ -34,16 +34,15 @@ def admin_block(user_id):
     form = BlockUserForm()
     
     if form.validate_on_submit(): 
-        target_user = db.session.query(User).get(user_id)
+        target_user = User.get(user_id)
         if target_user:
             message = form.message.data
             blocked_user = BlockedUser(user_id=user_id, message=message)
-            db.session.add(blocked_user)
-            db.session.commit()
+            BlockedUser.save(blocked_user)
 
     
-    blocked_users = BlockedUser.query.all()
-    users = db.session.query(User).all()
+    blocked_users = BlockedUser.get_all()
+    users = User.get_all()
     return render_template('users_list.html', users=users, form=form,blocked_users = blocked_users )
 
 @admin_bp.route('/admin/users/<int:user_id>/unblock', methods=['POST'])
@@ -51,14 +50,13 @@ def admin_block(user_id):
 @require_admin_role.require(http_exception=403)
 def admin_unblock(user_id):
     form = BlockUserForm()
-    target_user = db.session.query(User).get(user_id)
+    target_user = User.get(user_id)
     if target_user:
-        blocked_user = BlockedUser.query.filter_by(user_id=user_id).first()
+        blocked_user = BlockedUser.get_filtered_by(user_id=user_id)
         if blocked_user:
-            db.session.delete(blocked_user)
-            db.session.commit()
+            BlockedUser.delete(blocked_user)
 
-    users = db.session.query(User).all()
+    users = User.get_all()
     return render_template('users_list.html', users=users, form=form)
 
 @admin_bp.route('/admin/products')
