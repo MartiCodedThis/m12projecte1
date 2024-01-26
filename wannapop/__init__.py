@@ -4,7 +4,6 @@ from flask_login import LoginManager
 from flask_principal import Principal
 from flask_debugtoolbar import DebugToolbarExtension
 from .helper_mail import MailManager
-import os
 import logging
 from logging.handlers import RotatingFileHandler
 

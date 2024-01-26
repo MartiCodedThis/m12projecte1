@@ -4,7 +4,6 @@ from .models import Product, Category, BlockedUser, BannedProduct
 from .forms import ProductForm, DeleteForm
 from .helper_role import require_view_permission, require_create_permission, require_edit_permission, require_delete_permission
 from werkzeug.utils import secure_filename
-from . import db_manager as db
 import uuid
 import os
 
@@ -27,7 +26,7 @@ def init():
 def product_list():
     # select amb join que retorna una llista dwe resultats
     current_app.logger.debug('Loading product list...')
-    products_with_category = db.session.query(Product, Category).join(Category).order_by(Product.id.asc()).all()
+    products_with_category = Product.get_all_with(Category)
     
     return render_template('products/list.html', products_with_category = products_with_category)
 
@@ -35,12 +34,12 @@ def product_list():
 @login_required
 @require_create_permission.require(http_exception=403)
 def product_create(): 
-    is_blocked = BlockedUser.query.filter_by(user_id=current_user.id).first()
+    is_blocked = BlockedUser.get_filtered_by(current_user.id)
     if(is_blocked):
         flash("El teu compte es troba bloquejat. Raó: "+is_blocked.message, "warning")
         return redirect(url_for('main_bp.product_list'))
     # select que retorna una llista de resultats
-    categories = db.session.query(Category).order_by(Category.id.asc()).all()
+    categories = Category.get_all()
 
     # carrego el formulari amb l'objecte products
     form = ProductForm()
@@ -49,7 +48,7 @@ def product_create():
     if form.validate_on_submit(): # si s'ha fet submit al formulari
         current_app.logger.debug('Creating product listing...')
         new_product = Product()
-        new_product.seller_id = current_user.id # en un el futur tindrà l'id de l'usuari autenticat
+        new_product.seller_id = current_user.id
 
         # dades del formulari a l'objecte product
         form.populate_obj(new_product)
@@ -63,8 +62,7 @@ def product_create():
             new_product.photo = "no_image.png"
 
         # insert!
-        db.session.add(new_product)
-        db.session.commit()
+        new_product.save()
 
         current_app.logger.debug('Product creation successful! Redirecting')
         flash("Nou producte creat", "success")
@@ -82,7 +80,8 @@ def product_read(product_id):
     if check_ban(product_id):
         return redirect(url_for('main_bp.product_list'))
 
-    (product, category) = db.session.query(Product, Category).join(Category).filter(Product.id == product_id).one()
+    (product, category) = Product.get_with(Category, product_id)
+    
     
     return render_template('products/read.html', product = product, category = category)
 
@@ -96,12 +95,12 @@ def product_update(product_id):
         return redirect(url_for('main_bp.product_list'))
     
     # select amb 1 resultat
-    product = db.session.query(Product).filter(Product.id == product_id).one()
+    product = Product.get_filtered_by(product_id)
 
     if(current_user.id == product.seller_id):
 
         # select que retorna una llista de resultats
-        categories = db.session.query(Category).order_by(Category.id.asc()).all()
+        categories = Category.get_all()
 
         # carrego el formulari amb l'objecte products
         form = ProductForm(obj = product)
@@ -118,8 +117,7 @@ def product_update(product_id):
                 product.photo = filename
 
             # update!
-            db.session.add(product)
-            db.session.commit()
+            product.update()
 
             current_app.logger.debug('Product update successful! Redirecting')
             flash("Producte actualitzat", "success")
@@ -140,7 +138,7 @@ def product_delete(product_id):
         return redirect(url_for('main_bp.product_list'))
     
     # select amb 1 resultat
-    product = db.session.query(Product).filter(Product.id == product_id).one()
+    product = Product.get_filtered_by(product_id)
     
     if(current_user.id == product.seller_id):
 
@@ -148,8 +146,7 @@ def product_delete(product_id):
         
         if form.validate_on_submit(): # si s'ha fet submit al formulari
             # delete!
-            db.session.delete(product)
-            db.session.commit()
+            product.delete()
 
             flash("Producte esborrat", "success")
             return redirect(url_for('main_bp.product_list'))
@@ -178,7 +175,7 @@ def __manage_photo_file(photo_file):
     return None
 
 def check_ban(product_id):
-    banned = db.session.query(BannedProduct).filter(BannedProduct.product_id == product_id).first()
+    banned = BannedProduct.get_filtered_by(product_id)
     if banned:
         flash("Producte banejat. Raó: "+banned.reason, "warning")
         current_app.logger.debug('This product is banned. Reason: '+banned.reason)
