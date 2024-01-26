@@ -47,12 +47,13 @@ def create_app():
     
     with app.app_context():
         from . import routes_main, routes_auth, routes_admin
-
+        from .api import api_bp
         # Registra els blueprints
         app.logger.debug('Loading blueprints...')
         app.register_blueprint(routes_main.main_bp)
         app.register_blueprint(routes_auth.auth_bp)
         app.register_blueprint(routes_admin.admin_bp)
+        app.register_blueprint(api_bp, url_prefix='/api/v1.0')
 
     app.logger.info("Application is up and running!")
 
