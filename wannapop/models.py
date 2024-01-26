@@ -53,7 +53,7 @@ class Order(db.Model, BaseMixin, SerializableMixin):
     id = db.Column(db.Integer, primary_key = True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
     buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    offer = db.Column(db.Money)
+    offer = db.Column(db.Numeric)
     created = db.Column(db.DateTime)
 
 class ConfirmedOrder(db.Model, BaseMixin, SerializableMixin):
