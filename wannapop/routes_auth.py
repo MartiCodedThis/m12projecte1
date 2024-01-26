@@ -100,7 +100,7 @@ def profile():
 @login_manager.user_loader
 def load_user(email):
     if email is not None:
-        user_exists = User.get_filtered_by(User.email == email)
+        user_exists = User.get_filtered_by(email=email)
         return user_exists
     return None
 
