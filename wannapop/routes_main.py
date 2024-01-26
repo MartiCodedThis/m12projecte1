@@ -24,7 +24,7 @@ def init():
 @main_bp.route('/products/list')
 @login_required
 def product_list():
-    # select amb join que retorna una llista dwe resultats
+    # select amb join que retorna una llista de resultats
     current_app.logger.debug('Loading product list...')
     products_with_category = Product.get_all_with(Category)
     
@@ -34,7 +34,7 @@ def product_list():
 @login_required
 @require_create_permission.require(http_exception=403)
 def product_create(): 
-    is_blocked = BlockedUser.get_filtered_by(current_user.id)
+    is_blocked = BlockedUser.get_filtered_by(user_id=current_user.id)
     if(is_blocked):
         flash("El teu compte es troba bloquejat. Raó: "+is_blocked.message, "warning")
         return redirect(url_for('main_bp.product_list'))
@@ -80,7 +80,7 @@ def product_read(product_id):
     if check_ban(product_id):
         return redirect(url_for('main_bp.product_list'))
 
-    (product, category) = Product.get_with(Category, product_id)
+    (product, category) = Product.get_with(product_id, Category)
     
     
     return render_template('products/read.html', product = product, category = category)
@@ -95,7 +95,7 @@ def product_update(product_id):
         return redirect(url_for('main_bp.product_list'))
     
     # select amb 1 resultat
-    product = Product.get_filtered_by(product_id)
+    product = Product.get_filtered_by(id=product_id)
 
     if(current_user.id == product.seller_id):
 
@@ -138,7 +138,7 @@ def product_delete(product_id):
         return redirect(url_for('main_bp.product_list'))
     
     # select amb 1 resultat
-    product = Product.get_filtered_by(product_id)
+    product = Product.get_filtered_by(id=product_id)
     
     if(current_user.id == product.seller_id):
 
@@ -175,7 +175,7 @@ def __manage_photo_file(photo_file):
     return None
 
 def check_ban(product_id):
-    banned = BannedProduct.get_filtered_by(product_id)
+    banned = BannedProduct.get_filtered_by(product_id=product_id)
     if banned:
         flash("Producte banejat. Raó: "+banned.reason, "warning")
         current_app.logger.debug('This product is banned. Reason: '+banned.reason)

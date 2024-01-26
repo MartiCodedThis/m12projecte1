@@ -1,4 +1,4 @@
-from .templates import db_manager as db
+from . import db_manager as db
 
 class BaseMixin():
     
