@@ -54,9 +54,9 @@ class Order(db.Model, BaseMixin, SerializableMixin):
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
     buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     offer = db.Column(db.Numeric)
-    created = db.Column(db.DateTime)
+    created = db.Column(db.DateTime, server_default=func.now())
 
 class ConfirmedOrder(db.Model, BaseMixin, SerializableMixin):
     __tablename__ = "confirmed_orders"
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
-    created = db.Column(db.DateTime)
+    created = db.Column(db.DateTime, server_default=func.now())
