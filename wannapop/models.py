@@ -11,6 +11,7 @@ class Product(db.Model, BaseMixin, SerializableMixin):
     photo = db.Column(db.String, nullable=False)
     price = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
+    status_id = db.Column(db.Integer, db.ForeignKey("statuses.id"))
     seller_id = db.Column(db.Integer, db.ForeignKey("users.id")) #db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created = db.Column(db.DateTime, server_default=func.now())
     updated = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
@@ -60,3 +61,10 @@ class ConfirmedOrder(db.Model, BaseMixin, SerializableMixin):
     __tablename__ = "confirmed_orders"
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
     created = db.Column(db.DateTime, server_default=func.now())
+
+class Status(db.Model, BaseMixin, SerializableMixin):
+    __tablename__ = "statuses"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    slug= db.Column(db.String)
+
