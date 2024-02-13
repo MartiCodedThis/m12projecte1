@@ -2,6 +2,7 @@ from . import api_bp
 from .errors import not_found, bad_request, forbidden_access
 from ..models import User, Product
 from .helper_json import json_request, json_response, json_error_response
+from .helper_auth import basic_auth, token_auth
 from flask import current_app, request
 
 url_head = "/api/v1.0/"
@@ -43,3 +44,9 @@ def list_user_products(user_id):
     else:
         return json_error_response()
     
+@api_bp.route('/tokens', methods=['GET'])
+@basic_auth.login_required
+def get_token(email, password):
+    user = basic_auth.current_user()
+    token = user.get_token(email=email, password=password)
+    return {'token':token}
