@@ -46,7 +46,7 @@ def list_user_products(user_id):
     
 @api_bp.route('/tokens', methods=['GET'])
 @basic_auth.login_required
-def get_token(email, password):
+def get_token():
     user = basic_auth.current_user()
-    token = user.get_token(email=email, password=password)
+    token = user.get_token()
     return {'token':token}
