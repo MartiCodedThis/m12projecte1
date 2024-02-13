@@ -2,6 +2,8 @@ from . import db_manager as db
 from sqlalchemy.sql import func
 from flask_login import UserMixin
 from .mixins import BaseMixin, SerializableMixin
+from datetime import timedelta, timezone, datetime
+import secrets
 
 class Product(db.Model, BaseMixin, SerializableMixin):
     __tablename__ = "products"
@@ -31,7 +33,31 @@ class User(db.Model, BaseMixin, SerializableMixin, UserMixin):
     role = db.Column(db.String, nullable = False)
     email_token = db.Column(db.String)
     verified = db.Column(db.Integer)
+    token = db.Column(db.String, index = True, unique = True)
+    token_expiration = db.Column(db.DateTime)
 
+    def get_token(self, expires_in=3600):
+        now = datetime.now(timezone.utc)
+        if self.token and self.token_expiration.replace(
+                tzinfo=timezone.utc) > now + timedelta(seconds=60):
+            return self.token
+        self.token = secrets.token_hex(16)
+        self.token_expiration = now + timedelta(seconds=expires_in)
+        db.session.add(self)
+        return self.token
+    
+    def revoke_token(self):
+        self.token_expiration = datetime.now(timezone.utc) - timedelta(
+            seconds=1)
+        self.save()
+        
+    @staticmethod
+    def check_token(token):
+        user = User.get_filtered_by(token=token)
+        if user is None or user.token_expiration.replace(
+                tzinfo=timezone.utc) < datetime.now(timezone.utc):
+            return None
+        return user
     exclude_attr = ['password']
     
     def get_id(self):
