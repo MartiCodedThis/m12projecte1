@@ -44,6 +44,7 @@ class User(db.Model, BaseMixin, SerializableMixin, UserMixin):
         self.token = secrets.token_hex(16)
         self.token_expiration = now + timedelta(seconds=expires_in)
         db.session.add(self)
+        self.save()
         return self.token
     
     def revoke_token(self):

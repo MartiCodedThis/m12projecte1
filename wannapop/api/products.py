@@ -32,9 +32,9 @@ def api_product_details(product_id):
 def api_product_edit(product_id):
     
     prod = Product.get(product_id)
-
+    user = token_auth.verify_token
     if prod:
-        if token_auth.current_user().id != prod.seller_id:
+        if user.id != prod.seller_id:
             return json_error_response("403", "User not authorized to edit this product")
         else:
             try:
