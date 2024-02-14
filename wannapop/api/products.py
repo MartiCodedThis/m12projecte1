@@ -26,7 +26,6 @@ def api_product_details(product_id):
         current_app.logger.debug("Product {} not found".format(product_id))
         return not_found("Product not found")
     
-
 @api_bp.route('/products/<int:product_id>', methods=['PUT'])
 @token_auth.verify_token
 def api_product_edit(product_id):

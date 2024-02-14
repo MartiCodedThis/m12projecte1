@@ -23,7 +23,6 @@ def list_users():
     data = User.to_dict_collection(users)
     return json_response(data)
     
-
 @api_bp.route('/users/<int:user_id>', methods=['GET'])
 def show_user(user_id):
     user = User.get(user_id)
@@ -32,8 +31,6 @@ def show_user(user_id):
     else:
         return json_error_response()
     
-
-
 @api_bp.route('/users/<int:user_id>/products', methods=['GET'])
 def list_user_products(user_id):
     user = User.get(user_id)

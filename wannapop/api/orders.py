@@ -3,16 +3,22 @@ from .errors import not_found, bad_request
 from ..models import Order, ConfirmedOrder
 from .helper_auth import token_auth
 from .helper_json import json_response, json_request
+from .helper_auth import basic_auth
 from flask import current_app
 
 
 @api_bp.route('/orders', methods = ['POST'])
+@basic_auth.login_required
 def api_order_add():
-    
-    data = json_request(['id','product_id', 'buyer_id', 'offer', 'created'], False)
-    order = Order.create()
-    order.update(**data)
-    return json_response(order.to_dict())
+    try:
+        user_id = token_auth.current_user().id
+        data = json_request(['product_id', 'buyer_id', 'offer', 'created'], False)
+        order = Order.create(**data, buyer_id=user_id)
+    except Exception as e:
+            current_app.logger.debug(e)
+            return bad_request(str(e))
+    else:
+        return json_response(order.to_dict())
 
 @api_bp.route('/orders/<int:order_id>', methods = ['PUT'])
 def api_order_edit(order_id):
@@ -50,7 +56,6 @@ def api_order_confirm(order_id):
     else:
         current_app.logger.debug("Order {} not found".format(order_id))
         return not_found("Order not found")
-
 
 @api_bp.route('/orders/<int:order_id>/confirmed', methods=['DELETE'])
 @token_auth.verify_token
