@@ -43,10 +43,3 @@ def list_user_products(user_id):
         return json_response(data)
     else:
         return json_error_response()
-    
-@api_bp.route('/tokens', methods=['POST'])
-@basic_auth.login_required
-def get_token():
-    user = basic_auth.current_user()
-    token = user.get_token()
-    return {'token':token}

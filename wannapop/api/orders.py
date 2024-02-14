@@ -1,6 +1,7 @@
 from . import api_bp
 from .errors import not_found, bad_request
 from ..models import Order, ConfirmedOrder
+from .helper_auth import token_auth
 from .helper_json import json_response, json_request
 from flask import current_app
 
@@ -39,6 +40,7 @@ def api_order_delete(order_id):
         return json_response(order.to_dict())
     
 @api_bp.route('/orders/<int:order_id>/confirmed', methods=['POST'])
+@token_auth.verify_token
 def api_order_confirm(order_id):
     order = Order.get(order_id)
     if order:
@@ -51,6 +53,7 @@ def api_order_confirm(order_id):
 
 
 @api_bp.route('/orders/<int:order_id>/confirmed', methods=['DELETE'])
+@token_auth.verify_token
 def api_order_cancel(order_id):
     order = ConfirmedOrder.get(order_id)
     if order:
