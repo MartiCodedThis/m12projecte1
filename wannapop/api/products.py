@@ -1,7 +1,7 @@
 from . import api_bp
 from .errors import not_found, bad_request
 from ..models import Product, Order, User
-from .helper_auth import token_auth
+from .helper_auth import token_auth, basic_auth
 from .helper_json import json_request, json_response, json_error_response
 from flask import current_app, request
 
@@ -27,11 +27,16 @@ def api_product_details(product_id):
         return not_found("Product not found")
     
 @api_bp.route('/products/<int:product_id>', methods=['PUT'])
-@token_auth.verify_token
+@token_auth.login_required
 def api_product_edit(product_id):
     
     prod = Product.get(product_id)
-    user = token_auth.verify_token
+    current_app.logger.debug("Prod: {}".format(prod.seller_id))
+
+    user=token_auth.current_user()
+    
+    current_app.logger.debug("User: {}".format(user.id))
+
     if prod:
         if user.id != prod.seller_id:
             return json_error_response("403", "User not authorized to edit this product")
@@ -39,7 +44,7 @@ def api_product_edit(product_id):
             try:
                 data = json_request(['title', 'description', 'photo', 'price', 'category_id'], False)
             except Exception as e:
-                current_app.logger.debug(e)
+                current_app.logger.debug(e) 
                 return bad_request(str(e))
             else:
                 prod.update(**data)
