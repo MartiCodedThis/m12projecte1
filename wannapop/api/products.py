@@ -1,7 +1,7 @@
 from . import api_bp
 from .errors import not_found, bad_request
-from ..models import Product, Order, User
-from .helper_auth import token_auth, basic_auth
+from ..models import Product, Order
+from .helper_auth import token_auth
 from .helper_json import json_request, json_response, json_error_response
 from flask import current_app, request
 
