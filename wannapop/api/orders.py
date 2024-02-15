@@ -18,28 +18,25 @@ def api_order_add():
 @api_bp.route('/orders/<int:order_id>', methods = ['PUT'])
 @token_auth.login_required
 def api_order_edit(order_id):
-    confirmed = ConfirmedOrder.get(order_id)
-    if not confirmed:
-        order = Order.get(order_id)
-        if order:
-            try:
-                user_id = token_auth.current_user().id
-                data = json_request(['product_id', 'buyer_id', 'offer', 'created'], False)
-            except Exception as e:
-                current_app.logger.debug(e)
-                return bad_request(str(e))
-            else:
-                order.update(**data, buyer_id=user_id)
-                current_app.logger.debug("UPDATED order: {}".format(order.to_dict()))
-                return json_response(order.to_dict())
+    order = Order.get(order_id)
+    if order:
+        
+        try:
+            user_id = token_auth.current_user().id
+            data = json_request(['product_id', 'offer', 'created'], False)
+        except Exception as e:
+            current_app.logger.debug(e)
+            return bad_request(str(e))
         else:
-            current_app.logger.debug("Order {} not found".format(order_id))
-            return not_found("Order not found")
+            order.update(**data, buyer_id=user_id)
+            current_app.logger.debug("UPDATED order: {}".format(order.to_dict()))
+            return json_response(order.to_dict())
     else:
-        current_app.logger.debug("Order {} already confirmed".format(order_id))
-        return not_found("Order already confirmed")
+        current_app.logger.debug("Order {} not found".format(order_id))
+        return not_found("Order not found")
 
 @api_bp.route('/orders/<int:order_id>', methods = ['DELETE'])
+@token_auth.login_required
 def api_order_delete(order_id):
     order = Order.get(order_id)
     if order:
@@ -69,7 +66,9 @@ def api_order_confirm(order_id):
 
 @api_bp.route('/orders/<int:order_id>/confirmed', methods=['DELETE'])
 @token_auth.login_required
+@token_auth.login_required
 def api_order_cancel(order_id):
+    user_id = token_auth.current_user().id
     order = ConfirmedOrder.get(order_id)
     user=token_auth.current_user()
     if order:
