@@ -19,6 +19,8 @@ SQLALCHEMY_DATABASE_URI = "mysql+pymysql://2dd06:uttVEcUemINNCX47@127.0.0.1:3306
 
 # PostgreSQL #
 #SQLALCHEMY_DATABASE_URI = "postgresql://2dd06:uttVEcUemINNCX47@37.27.3.70:5432/2dd06_pg"
+# PostgreSQL Docker#
+#SQLALCHEMY_DATABASE_URI = "mysql+pymysql://2dd06:uttVEcUemINNCX47@127.0.0.1:5432/2dd06_pg"
 
 SQLALCHEMY_ECHO = False 
 
