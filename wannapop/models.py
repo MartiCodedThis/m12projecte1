@@ -38,7 +38,7 @@ class User(db.Model, BaseMixin, SerializableMixin, UserMixin):
 
     def get_token(self, expires_in=3600):
         now = datetime.now(timezone.utc)
-        if self.token and self.token_expiration.replace(
+        if self.token and datetime.fromisoformat(self.token_expiration).replace(
                 tzinfo=timezone.utc) > now + timedelta(seconds=60):
             return self.token
         self.token = secrets.token_hex(16)
