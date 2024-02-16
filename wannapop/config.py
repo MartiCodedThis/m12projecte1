@@ -15,7 +15,7 @@ SECRET_KEY = "Valor aleatori molt llarg i super secret"
 # MySQL #
 # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://2dd06:uttVEcUemINNCX47@37.27.3.70:3306/2dd06_my"
 # MySQL Docker#
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://user:HOWDOYOUTURNTHISON@127.0.0.1:3306/userdb"
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://2dd06:uttVEcUemINNCX47@127.0.0.1:3306/2dd06_my"
 
 # PostgreSQL #
 #SQLALCHEMY_DATABASE_URI = "postgresql://2dd06:uttVEcUemINNCX47@37.27.3.70:5432/2dd06_pg"
