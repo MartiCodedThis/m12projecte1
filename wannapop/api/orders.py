@@ -66,7 +66,7 @@ def api_order_confirm(order_id):
     is_confirmed = ConfirmedOrder.get(order_id)
     user=token_auth.current_user()
     if order:
-        if user.id != order.buyer_id :
+        if user.id != order.seller_id :
             return json_error_response("403", "User not authorized to accept this order")
         else:
             if is_confirmed:
