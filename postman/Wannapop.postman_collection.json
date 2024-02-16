@@ -1,0 +1,502 @@
+{
+	"info": {
+		"_postman_id": "c3bdfa1c-1f7c-4e54-9f50-3fba6bbfdb53",
+		"name": "Wannapop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32451233",
+		"_collection_link": "https://dark-astronaut-115721.postman.co/workspace/m12projecte~44619082-9eac-4070-8026-b79f419adeee/collection/32451233-c3bdfa1c-1f7c-4e54-9f50-3fba6bbfdb53?action=share&source=collection_link&creator=32451233"
+	},
+	"item": [
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "List categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/categories",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "List products & filter by title",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/products?title=mòbil",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"products"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "mòbil",
+									"description": "ID of the product to read"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View product details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/products/1",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Telèfon mòbil\",\n    \"description\": \"Model antic de telèfon mòbil de la marca Nokia, indestructible\",\n    \"photo\": \"no_image.png\",\n    \"price\": \"499.99\",\n    \"category_id\": 1\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/products/3",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View product offers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/products/1/orders",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"products",
+								"1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Add offer",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\": 1,\r\n    \"offer\": 10.99\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/orders",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit offer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\": 1,\r\n    \"offer\": 10.99\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/orders/1",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm offer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/orders/1/confirmed",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"orders",
+								"1",
+								"confirmed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel confirmed offer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/orders/1/confirmed",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"orders",
+								"1",
+								"confirmed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete offer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/orders/1",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List users & filter by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/users?name=Joan Pérez",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Joan Pérez"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View user details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/users/1",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View user products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/users/1/products",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"users",
+								"1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statuses",
+			"item": [
+				{
+					"name": "List statuses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/statuses",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth token",
+			"item": [
+				{
+					"name": "Get token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"JSON response: data\", function () {\r",
+									"    var jsonResponse = pm.response.json();\r",
+									"    pm.expect(jsonResponse.data).to.be.an(\"object\");\r",
+									"    pm.expect(jsonResponse.data).to.have.any.keys(\"token\");\r",
+									"    // Store last token to test other web services\r",
+									"    pm.environment.set(\"token\", jsonResponse.data.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{email}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL_ENDPOINT}}/api/{{API_VERSION}}/tokens",
+							"host": [
+								"{{URL_ENDPOINT}}"
+							],
+							"path": [
+								"api",
+								"{{API_VERSION}}",
+								"tokens"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
