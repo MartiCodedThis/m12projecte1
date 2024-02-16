@@ -29,18 +29,18 @@ INSERT INTO categories (name, slug) VALUES
     ('Literatura', 'literatura');
 
 -- Products
-INSERT INTO products (title, description, price, category_id, seller_id, created, updated)
+INSERT INTO products (title, description, photo, price, category_id, seller_id, created, updated)
 VALUES 
-    ('Telèfon mòbil', 'Telèfon mòbil de la marca Nokia, indestructible', 599.99, 1, 1, '2023-10-21 17:34:08', '2024-02-09 16:06:11'),
-    ('Samarreta', 'Una samarreta de cotó de color blau.', 19.99, 2, 2, '2023-10-21 17:34:08', '2023-10-21 17:34:08'),
-    ('Ninot de peluix', 'Un ninot de peluix suau.', 9.99, 3, 3, '2023-10-21 17:34:08', '2023-10-21 17:34:08'),
-    ('Telèfon mòbil', 'Model antic de telèfon mòbil de la marca Nokia, indestructible', 499.99, 1, 4, '2022-05-13 00:01:47', '2024-02-15 16:18:01'),
-    ('Raqueta de pàdel', 'Raqueta de pàdel de segona ma, en perfecte estat.', 12.84, 5, 5, '2022-07-27 04:43:26', '2022-06-22 10:24:19'),
-    ('Portaespelmes', 'Portaespelmes de petites dimensions per decoració.', 4.88, 6, 6, '2023-03-05 08:58:43', '2023-09-06 17:49:01'),
-    ('Sandwitxera elèctrica', 'Grill elèctric per tostar sandwitxos, encara funciona.', 45.13, 7, 7, '2023-06-29 22:12:36', '2022-01-31 07:30:32'),
-    ('Escombra', 'Escombra per neteja de la llar en bon estat.', 31.97, 8, 8, '2023-07-22 03:56:12', '2022-10-04 09:52:57'),
-    ('Set de tornavisos', 'Maletí amb tornavisos de diferents diàmetres.', 12.6, 9, 9, '2023-08-23 12:59:55', '2023-02-15 21:11:03'),
-    ('Diccionari català', 'Diccionari de la llengua catalana.', 55.52, 10, 10, '2023-08-18 12:32:35', '2022-08-27 00:45:21');
+    ('Telèfon mòbil', 'Telèfon mòbil de la marca Nokia, indestructible', 'no_image.png', 599.99, 1, 1, '2023-10-21 17:34:08', '2024-02-09 16:06:11'),
+    ('Samarreta', 'Una samarreta de cotó de color blau.', 'no_image.png', 19.99, 2, 2, '2023-10-21 17:34:08', '2023-10-21 17:34:08'),
+    ('Ninot de peluix', 'Un ninot de peluix suau.', 'no_image.png', 9.99, 3, 3, '2023-10-21 17:34:08', '2023-10-21 17:34:08'),
+    ('Telèfon mòbil', 'Model antic de telèfon mòbil de la marca Nokia, indestructible', 'no_image.png', 499.99, 1, 4, '2022-05-13 00:01:47', '2024-02-15 16:18:01'),
+    ('Raqueta de pàdel', 'Raqueta de pàdel de segona ma, en perfecte estat.', 'no_image.png', 12.84, 5, 5, '2022-07-27 04:43:26', '2022-06-22 10:24:19'),
+    ('Portaespelmes', 'Portaespelmes de petites dimensions per decoració.', 'no_image.png', 4.88, 6, 6, '2023-03-05 08:58:43', '2023-09-06 17:49:01'),
+    ('Sandwitxera elèctrica', 'Grill elèctric per tostar sandwitxos, encara funciona.', 'no_image.png', 45.13, 7, 7, '2023-06-29 22:12:36', '2022-01-31 07:30:32'),
+    ('Escombra', 'Escombra per neteja de la llar en bon estat.', 'no_image.png', 31.97, 8, 8, '2023-07-22 03:56:12', '2022-10-04 09:52:57'),
+    ('Set de tornavisos', 'Maletí amb tornavisos de diferents diàmetres.', 'no_image.png', 12.6, 9, 9, '2023-08-23 12:59:55', '2023-02-15 21:11:03'),
+    ('Diccionari català', 'Diccionari de la llengua catalana.', 'no_image.png', 55.52, 10, 10, '2023-08-18 12:32:35', '2022-08-27 00:45:21');
 
 -- Banned Products
 INSERT INTO banned_products (product_id, reason, created) VALUES (1, 'Lame product', '2023-12-12 17:46:53');

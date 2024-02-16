@@ -59,7 +59,7 @@ CREATE TABLE "orders" (
 	"id"	INTEGER,
 	"product_id"	INTEGER,
 	"buyer_id"	INTEGER,
-	"offer"	NUMERIC DEFAULT 0,
+	"offer"	DECIMAL(10, 2),
 	"created"	DATETIME NOT NULL DEFAULT (DATETIME('now')),
 	CONSTRAINT "uc_product_buyer" UNIQUE("product_id","buyer_id"),
 	PRIMARY KEY("id" AUTOINCREMENT),
