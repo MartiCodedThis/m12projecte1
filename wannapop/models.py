@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from .mixins import BaseMixin, SerializableMixin
 from datetime import timedelta, timezone, datetime
 import secrets
+from flask import current_app
 
 class Product(db.Model, BaseMixin, SerializableMixin):
     __tablename__ = "products"
@@ -55,6 +56,8 @@ class User(db.Model, BaseMixin, SerializableMixin, UserMixin):
     @staticmethod
     def check_token(token):
         user = User.get_filtered_by(token=token)
+        current_app.logger.debug(token)
+        current_app.logger.debug(user)
         if user is None or user.token_expiration.replace(
                 tzinfo=timezone.utc) < datetime.now(timezone.utc):
             return None
